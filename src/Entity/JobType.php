@@ -6,6 +6,7 @@ use App\Repository\JobTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=JobTypeRepository::class)
@@ -21,6 +22,8 @@ class JobType
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotNull(message="Veuillez saisir un intitulé valide")
+     * @Assert\NotBlank(message="L'intitulé du type d'emploi ne peut pas être vide")
      */
     private $name;
 

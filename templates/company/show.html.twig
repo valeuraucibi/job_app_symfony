@@ -3,44 +3,84 @@
 {% block title %}Company{% endblock %}
 
 {% block body %}
-    <h1>Company</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ company.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ company.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ company.description }}</td>
-            </tr>
-            <tr>
-                <th>Employer_number</th>
-                <td>{{ company.employerNumber }}</td>
-            </tr>
-            <tr>
-                <th>Turnover</th>
-                <td>{{ company.turnover }}</td>
-            </tr>
-            <tr>
-                <th>Activity_area</th>
-                <td>{{ company.activityArea }}</td>
-            </tr>
-            <tr>
-                <th>Logo</th>
-                <td>{{ company.logo }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <main>
+        <div class="col-lg-8 col-10 mx-auto py-1 company-show">
+            <div class="mt-5 mx-auto d-flex justify-content-end">
+                <a href="{{ (previous_page != null) ? previous_page : path('company_index') }}" class="btn btn-link text-dark">Retour</a>
+            </div>
 
-    <a href="{{ path('company_index') }}">back to list</a>
+            <div class="mt-3 mx-auto">
+                <div class="company-show-image mx-auto" style="background-image: url({{ company.logo }})"></div>
+            </div>
 
-    <a href="{{ path('company_edit', {'id': company.id}) }}">edit</a>
+            <div class="mt-3 mx-auto">
+                <h1 class="title text-center">{{ company.name }}</h1>
+            </div>
 
-    {{ include('company/_delete_form.html.twig') }}
+            <div class="mt-5 mx-auto">
+                <div class="row">
+                    <div class="col-md-4 mx-auto">
+                        <div class="card text-dark bg-light mb-3 card-effect">
+                            <div class="card-header text-center">Effectif</div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ company.employerNumber }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mx-auto">
+                        <div class="card text-dark bg-light mb-3 card-effect">
+                            <div class="card-header text-center">Chiffre d'affaire</div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ company.turnover }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mx-auto">
+                        <div class="card text-dark bg-light mb-3 card-effect">
+                            <div class="card-header text-center">Secteur d'activité</div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ company.activityArea }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mx-auto mt-5">
+                <h5 class="h5 font-weight-bold">À propos : </h5>
+                <p class="text-justify mt-3">{{ company.description }}</p>
+            </div>
+
+            <div class="mx-auto mt-5">
+                <h5 class="h5 font-weight-bold mb-3">Offres : </h5>
+
+                {% if (pagination.getTotalItemCount() == 0) %}
+                    <div class="card mb-4 content-preview">
+                        <p class="text-center mt-3">Aucun job trouvé</p>
+                    </div>
+                {% else %}
+                    {% for jobOffer in pagination %}
+                        <div class="card mb-4 content-preview">
+                            <a href="{{ path('job_offer_show', {'id': jobOffer.id, 'previous_page': app.request.uri}) }}" class="text-dark">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ jobOffer.title }}</h5>
+                                    <span class="me-3"><i class="fas fa-map-marker-alt"></i> {{ jobOffer.city }}</span>
+                                    <span class="me-3"><i class="fas fa-file-contract"></i> {{ jobOffer.jobType.name }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="my-3 d-flex justify-content-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+    </main>
+
 {% endblock %}

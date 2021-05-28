@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Company;
 use App\Form\CompanyType;
 use App\Repository\CompanyRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,19 +16,31 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CompanyController extends AbstractController
 {
-    /**
-     * @Route("/", name="company_index", methods={"GET"})
-     */
-    public function index(CompanyRepository $companyRepository): Response
+	/**
+	 * @Route("/", name="company_index", methods={"GET"})
+	 * @param CompanyRepository $companyRepository
+	 * @param PaginatorInterface $paginator
+	 * @param Request $request
+	 * @return Response
+	 */
+    public function index(CompanyRepository $companyRepository, PaginatorInterface $paginator, Request $request): Response
     {
+	    $pagination = $paginator->paginate(
+		    $companyRepository->findBy([], ['name' => 'ASC']),
+		    $request->query->getInt('page', 1),
+		    8
+	    );
+
         return $this->render('company/index.html.twig', [
-            'companies' => $companyRepository->findAll(),
+	        'pagination' => $pagination
         ]);
     }
 
-    /**
-     * @Route("/new", name="company_new", methods={"GET","POST"})
-     */
+	/**
+	 * @Route("/new", name="company_new", methods={"GET","POST"})
+	 * @param Request $request
+	 * @return Response
+	 */
     public function new(Request $request): Response
     {
         $company = new Company();
@@ -48,13 +61,25 @@ class CompanyController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="company_show", methods={"GET"})
-     */
-    public function show(Company $company): Response
+	/**
+	 * @Route("/{id}", name="company_show", methods={"GET"})
+	 * @param Company $company
+	 * @param PaginatorInterface $paginator
+	 * @param Request $request
+	 * @return Response
+	 */
+    public function show(Company $company, PaginatorInterface $paginator, Request $request): Response
     {
+	    $pagination = $paginator->paginate(
+		    $company->getJobOffer(),
+		    $request->query->getInt('page', 1),
+		    5
+	    );
+
         return $this->render('company/show.html.twig', [
             'company' => $company,
+	        'pagination' => $pagination,
+	        'previous_page' => $request->get('previous_page')
         ]);
     }
 

@@ -1,20 +1,80 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <main>
+        <div class="homepage col-lg-8 col-11 mx-auto py-1">
+            <div class="text-center mt-5 mx-auto">
+                <h1 class="title">Trouver votre futur job</h1>
+            </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+            <!-- search bar -->
+            <div class="mx-auto my-5">
+                <form class="row g-3 needs-validation mx-auto" novalidate>
+                    <div class="col-md-3 ps-md-0">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="validationJobName" name="job_name" required />
+                            <label for="validationJobName" class="form-label">Intitulé du poste</label>
+                        </div>
+                    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/valeuraucibi/Desktop/Perso/job_app/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/valeuraucibi/Desktop/Perso/job_app/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+                    <div class="col-md-3">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="validationPlace" name="place" />
+                            <label for="validationPlace" class="form-label">Type de contrat</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="validationPlace" name="place" />
+                            <label for="validationPlace" class="form-label">Ville</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 pe-md-0">
+                        <button class="btn cta-button w-lg-0 w-100" type="submit">Rechercher</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="mt-5 mx-auto">
+                <div class="row">
+                    <div class="col-6">
+                        <b>{{ pagination.getTotalItemCount() }}</b> jobs
+                    </div>
+                    <div class="col-6">
+                        <p class="text-end">
+                            <small>Page {{ pagination.getCurrentPageNumber }} sur {{ pagination.pageCount }} pages</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job offer list -->
+            <div class="mt-2 mx-auto">
+                {% if (pagination.getTotalItemCount() == 0) %}
+                    <div class="card mb-4 content-preview">
+                        <p class="text-center mt-3">Aucun job trouvé</p>
+                    </div>
+                {% else %}
+                    {% for job_offer in pagination %}
+                        <div class="card mb-4 content-preview">
+                            <a href="{{ path('job_offer_show', {'id': job_offer.id, 'previous_page': app.request.uri}) }}" class="text-dark">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ job_offer.title }}</h5>
+                                    <span class="me-3"><i class="fas fa-map-marker-alt"></i> {{ job_offer.city }}</span>
+                                    <span class="me-3"><i class="fas fa-file-contract"></i> {{ job_offer.jobType.name }}</span>
+                                    <span class="me-3"><i class="fas fa-building"></i> {{ job_offer.company.name }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="my-3 d-flex justify-content-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

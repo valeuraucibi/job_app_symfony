@@ -1,45 +1,67 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Company index{% endblock %}
+{% block title %}Nos entreprises - {% endblock %}
 
 {% block body %}
-    <h1>Company index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Employer_number</th>
-                <th>Turnover</th>
-                <th>Activity_area</th>
-                <th>Logo</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for company in companies %}
-            <tr>
-                <td>{{ company.id }}</td>
-                <td>{{ company.name }}</td>
-                <td>{{ company.description }}</td>
-                <td>{{ company.employerNumber }}</td>
-                <td>{{ company.turnover }}</td>
-                <td>{{ company.activityArea }}</td>
-                <td>{{ company.logo }}</td>
-                <td>
-                    <a href="{{ path('company_show', {'id': company.id}) }}">show</a>
-                    <a href="{{ path('company_edit', {'id': company.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <main>
+        <section class="col-lg-8 col-11 mx-auto py-1">
+            <div class="text-center mx-auto mt-5">
+                <h1 class="title">Nos entreprises partenaires</h1>
+            </div>
 
-    <a href="{{ path('company_new') }}">Create new</a>
+            <!-- search bar -->
+            <div class="mx-auto my-5">
+                <form class="row g-3 needs-validation mx-auto" novalidate>
+                    <div class="col-md-8 ps-md-0">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="validationJobName" name="company_name" required />
+                            <label for="validationJobName" class="form-label">Nom de l'entreprise</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 pe-md-0">
+                        <button class="btn cta-button w-lg-0 w-100" type="submit">Rechercher</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="mx-auto mt-5">
+                <div class="row">
+                    <div class="col-6">
+                        <b>{{ pagination.getTotalItemCount() }}</b> entreprises
+                    </div>
+                    <div class="col-6">
+                        <p class="text-end">
+                            <small>Page {{ pagination.getCurrentPageNumber }} sur {{ pagination.pageCount }} pages</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-2 mb-5 mx-auto">
+                {% if (pagination.getTotalItemCount() == 0 or pagination == null) %}
+                    <div class="card mb-4 content-preview">
+                        <p class="text-center mt-3">Aucune entreprise trouvé</p>
+                    </div>
+                {% else %}
+                    {% for company in pagination %}
+                        <div class="card mb-4 content-preview">
+                            <a href="{{ path('company_show', {'id': company.id, 'previous_page': app.request.uri}) }}" class="text-dark">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ company.name }}</h5>
+                                    <span><i class="fas fa-file-contract me-1"></i> {{ company.jobOffer|length }} offres</span>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="my-3 d-flex justify-content-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </section>
+    </main>
+
 {% endblock %}

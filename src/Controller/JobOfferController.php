@@ -15,15 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class JobOfferController extends AbstractController
 {
-    /**
-     * @Route("/", name="job_offer_index", methods={"GET"})
-     */
-    public function index(JobOfferRepository $jobOfferRepository): Response
-    {
-        return $this->render('job_offer/index.html.twig', [
-            'job_offers' => $jobOfferRepository->findAll(),
-        ]);
-    }
 
     /**
      * @Route("/new", name="job_offer_new", methods={"GET","POST"})
@@ -48,13 +39,17 @@ class JobOfferController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="job_offer_show", methods={"GET"})
-     */
-    public function show(JobOffer $jobOffer): Response
+	/**
+	 * @Route("/{id}", name="job_offer_show", methods={"GET"})
+	 * @param JobOffer $jobOffer
+	 * @param Request $request
+	 * @return Response
+	 */
+    public function show(JobOffer $jobOffer, Request $request): Response
     {
         return $this->render('job_offer/show.html.twig', [
             'job_offer' => $jobOffer,
+	        'previous_page' => $request->get('previous_page')
         ]);
     }
 

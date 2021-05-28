@@ -1,0 +1,172 @@
+// Import Google font
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Variables and functions
+// ---------------------------------------------------------------------------------------------------------------------
+
+$main-color: #F93154;
+$main-color-dark: #bf002c;
+
+$font : 'Source Sans Pro', sans-serif;
+$general-font-size: 16px;
+
+@mixin setBackgroundImage($image-url, $bg-size, $bg-position, $bg-repeat: no-repeat) {
+    background-image: url($image-url);
+    background-repeat: $bg-repeat;
+    background-size: $bg-size;
+    background-position: $bg-position;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// General
+// ---------------------------------------------------------------------------------------------------------------------
+
+body {
+    font-family: $font;
+    font-size: $general-font-size;
+    color: #000;
+}
+
+.btn {
+    text-transform: none;
+    font-size: $general-font-size;
+}
+
+.cta-button {
+    background-color: $main-color;
+    color: #FFF;
+
+    &:hover {
+        color: #FFF;
+        background-color: $main-color-dark;
+    }
+}
+
+.title {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 30px;
+
+    &-white {
+        color: #FFF;
+    }
+
+    &-red {
+        color: $main-color;
+    }
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.link {
+    color: #000;
+    text-decoration: none;
+
+    &:hover {
+        color: $main-color;
+    }
+}
+
+.size-heart {
+    font-size: 30px;
+    color: #000;
+
+    &:hover {
+        color: $main-color;
+    }
+}
+
+.content-preview {
+    border-bottom: 2px solid $main-color;
+    border-radius: 5px;
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+
+    & a:hover {
+        box-shadow: inset 0 -3px 0 $main-color;
+    }
+}
+
+.form-outline .form-control {
+    padding: 0.50em .75em;
+}
+
+.pagination {
+    display: inline-block;
+
+    span {
+        padding-left: 10px;
+        padding-right: 10px;
+
+        a {
+            color: #000;
+
+            &:hover {
+                color: $main-color;
+            }
+        }
+    }
+}
+
+.card-effect {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Navigation style
+// ---------------------------------------------------------------------------------------------------------------------
+
+.navbar-light .navbar-nav .nav-link {
+    color: #000;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: $main-color;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Footer style
+// ---------------------------------------------------------------------------------------------------------------------
+
+.footer {
+
+    .footer-follow-link {
+
+        &-right {
+            margin-right: 20px;
+        }
+
+        &:hover {
+            color: $main-color !important;
+        }
+
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Homepage style
+// ---------------------------------------------------------------------------------------------------------------------
+
+.homepage {
+
+
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Company Show style
+// ---------------------------------------------------------------------------------------------------------------------
+
+.company-show {
+
+    .company-show-image {
+        height: 200px;
+        width: 200px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center center;
+    }
+}
+
+

@@ -1,19 +1,52 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+<!Doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% block stylesheets %}{% endblock %}
+    <title>{% block title %}{% endblock %}Job App</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand me-2" href="{{ path('homepage') }}">
+                    <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" height="16" alt="" loading="lazy" style="margin-top: -1px;"/>
+                </a>
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarButtonsExample"
+                        aria-controls="navbarButtonsExample" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarButtonsExample">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{{ path('homepage') }}">Toutes les offres</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('company_index') }}">Nos entreprises</a></li>
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="btn btn-link text-dark px-3 me-2">Se connecter</button>
+                        <button type="button" class="btn cta-button me-3">Créer un compte</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    {% block body %}{% endblock %}
+
+    <footer class="footer py-1">
+        <div class="col-lg-8 col-10 mx-auto text-center py-3 border-top">
+            <a href="#" class="footer-follow-link text-dark footer-follow-link-right">Confidentialité</a>
+            <a href="#" class="footer-follow-link text-dark">Condition d'utilisation</a>
+        </div>
+    </footer>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
+</body>
 </html>
