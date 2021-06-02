@@ -5,19 +5,37 @@ namespace App\Controller;
 use App\Entity\JobOffer;
 use App\Form\JobOfferType;
 use App\Repository\JobOfferRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/job/offer")
- */
+
 class JobOfferController extends AbstractController
 {
+	/**
+	 * @Route("/", name="job_offer_index", methods={"GET"})
+	 * @param Request $request
+	 * @param JobOfferRepository $jobOfferRepository
+	 * @param PaginatorInterface $paginator
+	 * @return Response
+	 */
+	public function index(Request $request ,JobOfferRepository $jobOfferRepository, PaginatorInterface $paginator): Response
+	{
+		$pagination = $paginator->paginate(
+			$jobOfferRepository->findBy([], ['created_at' => 'ASC']),
+			$request->query->getInt('page', 1),
+			8
+		);
+
+		return $this->render('job_offer/index.html.twig', [
+			'pagination' => $pagination
+		]);
+	}
 
     /**
-     * @Route("/new", name="job_offer_new", methods={"GET","POST"})
+     * @Route("/joboffer/new", name="job_offer_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -40,7 +58,7 @@ class JobOfferController extends AbstractController
     }
 
 	/**
-	 * @Route("/{id}", name="job_offer_show", methods={"GET"})
+	 * @Route("/joboffer/{id}", name="job_offer_show", methods={"GET"})
 	 * @param JobOffer $jobOffer
 	 * @param Request $request
 	 * @return Response
@@ -54,7 +72,7 @@ class JobOfferController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="job_offer_edit", methods={"GET","POST"})
+     * @Route("/joboffer/{id}/edit", name="job_offer_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, JobOffer $jobOffer): Response
     {
@@ -74,7 +92,7 @@ class JobOfferController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="job_offer_delete", methods={"POST"})
+     * @Route("/joboffer/{id}", name="job_offer_delete", methods={"POST"})
      */
     public function delete(Request $request, JobOffer $jobOffer): Response
     {
